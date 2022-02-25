@@ -11,7 +11,8 @@ include_directories(cligraph ${CURSES_INCLUDE_DIRS})
 
 add_executable(cligraph
   src/main.c
-  src/cord.c
+  src/coordinates.c
+  src/window.c
   src/bstrlib/bstrlib.c)
 
 target_link_libraries(cligraph ${CURSES_LIBRARIES} ${MENU_LIBRARY} )
