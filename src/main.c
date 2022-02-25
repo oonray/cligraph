@@ -14,7 +14,6 @@
 static inline WINDOW *init(){WINDOW *w = initscr(); raw();keypad(stdscr,TRUE);noecho(); return w;}
 static inline void end(){endwin();}
 
-
 static struct tagbstring choices[] = {
     bsStatic("Choice 1"),
     bsStatic("Choice 2"),
