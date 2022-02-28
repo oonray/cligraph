@@ -13,6 +13,7 @@ add_executable(cligraph
   src/main.c
   src/coordinates.c
   src/window.c
+  src/widgets/IO.c
   src/bstrlib/bstrlib.c)
 
-target_link_libraries(cligraph ${CURSES_LIBRARIES} ${MENU_LIBRARY} )
+target_link_libraries(cligraph ${CURSES_LIBRARIES} ${MENU_LIBRARY} ringbuffer)
