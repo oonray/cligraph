@@ -44,27 +44,30 @@ int main(int argc, char *argv[]) {
     Cord *c = Cord_New(3, 1);
     Cord *c2 = Cord_New(3, 2);
     Win_IO_WriteString(windows, 1, c, in);
+
     bstring data = Win_IO_GetString(windows, 1, c2);
-    bstring out = bfromcstr("");
+    Win_IO_Clear(windows, 0);
+    Win_IO_Refresh(windows, 0);
 
     f = popen(bdata(data), "r");
     for (;;) {
-      int r = fread(&buff, 1024, 1024, f);
-      if (r == 0) {
-        Win_IO_WriteString(windows, 0, c2, bfromcstr("No Data Recieved"));
+      int l = fread(&buff, 1024, 1, f);
+      int ln = strlen((char *)&buff);
+      if (ln <= 0) {
+        Win_IO_WriteString(windows, 0, c, bformat("No Data Recieved: %d", ln));
         Win_IO_Refresh(windows, 0);
         break;
       }
-      c2->x = c2->x + r;
 
-      RingBuffer_Write(buffer, (char *)&buff, 1024);
-      RingBuffer_Commit_Write(buffer, 1024);
+      c2->x = c2->x + ln;
 
-      RingBuffer_Read(buffer, (char *)&o_buff, 1024);
-      RingBuffer_Commit_Read(buffer, 1024);
-      Win_IO_WriteString(windows, 0, c2, data);
+      Win_IO_WriteString(windows, 0, c2, bfromcstr((char *)&buff));
       Win_IO_Refresh(windows, 0);
+      if (l <= 0) {
+        break;
+      }
     }
+    fclose(f);
 
     Win_IO_Clear(windows, 1);
     Win_IO_Refresh(windows, 1);
